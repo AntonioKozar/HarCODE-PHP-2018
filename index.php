@@ -36,7 +36,7 @@
           <hr>
           <form method="POST" action="display.php">
           <div class="form-group">
-            <input style="width:50%; margin-left:25%;" type="text" class="form-control" id="InputCode" placeholder="HarCODE">
+            <input style="width:50%; margin-left:25%;" type="text" class="form-control" name="InputCode" placeholder="HarCODE">
           </div>
           <button style="width:50%; margin-left:25%;" type="submit" class="btn btn-primary">Submit</button>
         </form>
@@ -57,10 +57,10 @@
           <!-- Dropdown menu links -->
           <form class="p-3" method="POST" action="php/index.php">
             <div class="form-group">
-              <input type="text" class="form-control" id="InputUsername" placeholder="Username">
+              <input type="text" class="form-control" name="InputUsername" placeholder="Username" required autofocus>
             </div>   
             <div class="form-group">
-              <input type="password" class="form-control" id="InputPassword" placeholder="Password">
+              <input type="password" class="form-control" name="InputPassword" placeholder="Password" required>
             </div>          
             <button type="submit" class="btn btn-primary">Submit</button>
           </form>
