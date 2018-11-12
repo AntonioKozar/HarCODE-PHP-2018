@@ -8,7 +8,7 @@
  * @version 1.0
  * @author Antonio Kožar, mag.ing.el.
  */ 
-
+ session_start();
  require("class.php");
  require("functions.php");
  require("static.php");
@@ -23,6 +23,8 @@
     if(mysqli_num_rows($Result) == 1)
     {
       $UserInformation = mysqli_fetch_assoc($Result);
+      $_SESSION['User'] = $UserInformation['name'] . ' ' . $UserInformation['lastname'];
+
       switch($UserInformation['role'])
       {
         case 1:

@@ -20,7 +20,7 @@
     $DatabaseConnection = DatabaseConnection();
     $username = mysqli_real_escape_string($DatabaseConnection,trim($username));
     $password = mysqli_real_escape_string($DatabaseConnection,trim($password));
-    $Result = mysqli_query($DatabaseConnection,"SELECT username, password, role FROM users WHERE username='{$username}' AND password='{$password}';") or die('Error: ' . mysqli_error($DatabaseConnection));
+    $Result = mysqli_query($DatabaseConnection,"SELECT username, password, name, lastname, role FROM users WHERE username='{$username}' AND password='{$password}';") or die('Error: ' . mysqli_error($DatabaseConnection));
     mysqli_close($DatabaseConnection);
     return $Result;
  }
