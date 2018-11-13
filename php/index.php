@@ -9,6 +9,10 @@
  * @author Antonio Kožar, mag.ing.el.
  */ 
  session_start();
+ if(isset($_SESSION['User']))
+ {
+  
+ }
  require("class.php");
  require("functions.php");
  require("static.php");

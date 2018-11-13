@@ -1,6 +1,20 @@
- <?php
+<?php
     session_start();
-    $HostPath = "http://" . $_SERVER["HTTP_HOST"] . rtrim(dirname($_SERVER["PHP_SELF"]), "/\\");
+    require("../../class.php");
+    require("../../functions.php");
+    require("../../static.php");
+
+    $HostPath = "..";
+    if((isset($_POST['Name']) and isset($_POST['Country']) and isset($_POST['Zipcode'])) and ($_POST['Name'] != "" and $_POST['Country'] != "" and $_POST['Zipcode'] != ""))
+    {
+        $City = new City;
+        $City->name = $_POST['Name'];      
+        $City->zipcode = $_POST['Zipcode'];  
+        $City->country = $_POST['Country'];
+        $Result = CityCreate($City);
+        print($Result);        
+    }
+    $CountryResult = CountryView();
 
 ?>
  
@@ -23,15 +37,15 @@
   <body>    
     <div class="container">
       <div class="row align-items-center">
-        <div class="col table-bordered"></div>
+        <div class="col"></div>
         <div class="col-lg-11">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a class="navbar-brand" href="http://<?php print($HostPath) ?>/index.php">HarCODE</a>
+          <a class="navbar-brand" href="../index.php">HarCODE</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav mr-auto">
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProducts" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Products
@@ -84,14 +98,14 @@
                   <a class="dropdown-item" href="<?php print($HostPath) ?>/manufacturers/delete.php">Delete</a>
                 </div>
               </li>
-              <li class="nav-item dropdown">
+              <li class="nav-item active dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCitys" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Citys
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownCitys">
                   <a class="dropdown-item" href="<?php print($HostPath) ?>/citys/index.php">View</a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="<?php print($HostPath) ?>/citys/create.php">Create</a>
+                  <a class="dropdown-item active" href="<?php print($HostPath) ?>/citys/create.php">Create</a>
                   <a class="dropdown-item" href="<?php print($HostPath) ?>/citys/read.php">Read</a>                  
                   <a class="dropdown-item" href="<?php print($HostPath) ?>/citys/update.php">Update</a>
                   <a class="dropdown-item" href="<?php print($HostPath) ?>/citys/delete.php">Delete</a>
@@ -126,9 +140,37 @@
             </ul>
             <a class="btn btn-outline-success my-2 my-sm-0" href="http://<?php print($_SERVER["HTTP_HOST"]); ?>/HarCODE-PHP-2018/index.php">Logout</a>
           </div>
-        </nav>  
+        </nav> 
+        <br><hr><br><br>
+        <form method="POST">
+            <div class="form-group">
+                <label for="InputCityName">City</label>
+                <input type="input" class="form-control" id="InputCityName" placeholder="City name here..." name="Name">
+
+                <label for="InputCityZipcode">Zipcode</label>
+                <input type="input" class="form-control" id="InputCityZipcode" placeholder="City zip code here..." name="Zipcode">
+
+                <label for="InputCountryName">Country</label>
+                <select class="form-control" id="InputCountryName" name="Country">
+                <?php 
+                foreach ($CountryResult as $Row) {
+                ?>
+                    <option value="<?php print($Row[1]);?>"><?php print($Row[1]);?></option>
+                <?php
+                }
+                ?>                    
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <br><br><hr><br>
+
+
+
+
+ 
         </div>
-        <div class="col table-bordered"></div>
+        <div class="col"></div>
       </div>
     </div>
   

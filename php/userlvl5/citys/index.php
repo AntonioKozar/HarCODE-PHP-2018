@@ -1,7 +1,11 @@
- <?php
+<?php
     session_start();
-    $HostPath = "http://" . $_SERVER["HTTP_HOST"] . rtrim(dirname($_SERVER["PHP_SELF"]), "/\\");
+    require("../../class.php");
+    require("../../functions.php");
+    require("../../static.php");
 
+    $HostPath = "..";
+    $Result = CityView();
 ?>
  
  <!doctype html>
@@ -23,15 +27,15 @@
   <body>    
     <div class="container">
       <div class="row align-items-center">
-        <div class="col table-bordered"></div>
+        <div class="col"></div>
         <div class="col-lg-11">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a class="navbar-brand" href="http://<?php print($HostPath) ?>/index.php">HarCODE</a>
+          <a class="navbar-brand" href="../index.php">HarCODE</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav mr-auto">
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProducts" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Products
@@ -84,12 +88,12 @@
                   <a class="dropdown-item" href="<?php print($HostPath) ?>/manufacturers/delete.php">Delete</a>
                 </div>
               </li>
-              <li class="nav-item dropdown">
+              <li class="nav-item active dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCitys" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Citys
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownCitys">
-                  <a class="dropdown-item" href="<?php print($HostPath) ?>/citys/index.php">View</a>
+                  <a class="dropdown-item active" href="<?php print($HostPath) ?>/citys/index.php">View</a>
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="<?php print($HostPath) ?>/citys/create.php">Create</a>
                   <a class="dropdown-item" href="<?php print($HostPath) ?>/citys/read.php">Read</a>                  
@@ -126,9 +130,56 @@
             </ul>
             <a class="btn btn-outline-success my-2 my-sm-0" href="http://<?php print($_SERVER["HTTP_HOST"]); ?>/HarCODE-PHP-2018/index.php">Logout</a>
           </div>
-        </nav>  
+        </nav> 
+        <br><hr><br><br>
+        <table class="table table-hover table-sm">
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Zipcode</th>
+                <th scope="col">Country</th>
+                <th scope="col">Options</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php 
+            $counter = 1;
+            foreach ($Result as $Row) {
+            ?>
+                <tr>
+                <th scope="row"><?php print($counter);?></th>
+                <td><?php print($Row[1]);?></td>
+                <td><?php print($Row[2]);?></td>
+                <td><?php print($Row[3]);?></td>
+                <td>
+                    <div class="btn-group" role="group">
+                        <form method="POST" action="update.php">
+                            <input type="hidden" class="form-control" id="CityID" name="ID" value="<?php print($Row[0]);?>">
+                            <button type="submit" class="btn btn-light btn-sm">Edit</button>
+                        </form>
+                        <form method="POST" action="delete.php">
+                            <input type="hidden" class="form-control" id="CityID" name="ID" value="<?php print($Row[0]);?>">
+                            <button type="submit" class="btn btn-light btn-sm">Delete</button>
+                        </form>                           
+                    </div>
+                </td>
+                </tr>
+            <?php                
+                $counter++;
+            }
+            unset($counter, $Result);
+            ?>              
+            </tbody>
+        </table>
+        <br><br><hr><br>
+
+
+
+
+
         </div>
-        <div class="col table-bordered"></div>
+        <div class="col"></div>
       </div>
     </div>
   

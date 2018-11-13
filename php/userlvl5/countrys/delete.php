@@ -1,7 +1,34 @@
- <?php
+<?php
     session_start();
-    $HostPath = "http://" . $_SERVER["HTTP_HOST"] . rtrim(dirname($_SERVER["PHP_SELF"]), "/\\");
+    require("../../class.php");
+    require("../../functions.php");
+    require("../../static.php");
 
+    $HostPath = "..";
+    
+    if(isset($_POST['delete']) and $_POST['delete'] == "1")
+    {
+        $ID = $_POST['ID'];    
+        $Result = CountryDelete($ID);
+        print_r($Result);
+        header("Location:" . $HostPath . "/countrys/index.php");
+    }
+    elseif (isset($_POST['ID']) and $_POST['ID'] != "") {
+        $ID = $_POST['ID'];
+        $Result = CountryGet($ID);
+        
+        if($Result == 0)
+        {
+            $Result = '<script>alert("Country you are trying to edit is missing. Contact your administrator.");</script>';
+            print($Result);
+            header("Location:" . $HostPath . "/countrys/index.php");
+        }
+    }
+    else{
+        $Result = '<script>alert("You need to select country to edit it.");</script>';
+        print($Result);
+        header("Location:" . $HostPath . "/countrys/index.php");
+    }    
 ?>
  
  <!doctype html>
@@ -23,15 +50,15 @@
   <body>    
     <div class="container">
       <div class="row align-items-center">
-        <div class="col table-bordered"></div>
+        <div class="col"></div>
         <div class="col-lg-11">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a class="navbar-brand" href="http://<?php print($HostPath) ?>/index.php">HarCODE</a>
+          <a class="navbar-brand" href="../index.php">HarCODE</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
+            <ul class="navbar-nav mr-auto">
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProducts" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Products
@@ -97,7 +124,7 @@
                   <a class="dropdown-item" href="<?php print($HostPath) ?>/citys/delete.php">Delete</a>
                 </div>
               </li>
-              <li class="nav-item dropdown">
+              <li class="nav-item active dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCountrys" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Countrys
                 </a>
@@ -106,7 +133,7 @@
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="<?php print($HostPath) ?>/countrys/create.php">Create</a>
                   <a class="dropdown-item" href="<?php print($HostPath) ?>/countrys/read.php">Read</a>                  
-                  <a class="dropdown-item" href="<?php print($HostPath) ?>/countrys/update.php">Update</a>
+                  <a class="dropdown-item active" href="<?php print($HostPath) ?>/countrys/update.php">Update</a>
                   <a class="dropdown-item" href="<?php print($HostPath) ?>/countrys/delete.php">Delete</a>
                 </div>
               </li>
@@ -126,9 +153,19 @@
             </ul>
             <a class="btn btn-outline-success my-2 my-sm-0" href="http://<?php print($_SERVER["HTTP_HOST"]); ?>/HarCODE-PHP-2018/index.php">Logout</a>
           </div>
-        </nav>  
+        </nav> 
+        <br><hr><br><br>
+        <form method="POST">
+            <div class="form-group">
+                <label for="InputCountryName">Country</label>
+                <input type="input" class="form-control disabled" id="InputCountryName" placeholder="Country name here..." name="Name" value="<?php print($Result['name']); ?>" disabled>
+            </div>
+            <input type="hidden" class="form-control" id="CountryID" name="ID" value="<?php print($ID);?>">
+            <button type="submit" class="btn btn-danger" name="delete" value="1">Delete</button>
+        </form>
+        <br><br><hr><br>
         </div>
-        <div class="col table-bordered"></div>
+        <div class="col"></div>
       </div>
     </div>
   

@@ -10,6 +10,7 @@
  */
 
 class User{
+    public $id;
     public $username;
     public $password;
     public $name;
@@ -17,15 +18,17 @@ class User{
     public $email;
 }
 class Country{
+    public $id;
     public $name;
-    public $description;
 }
 class City{
+    public $id;
     public $zipcode;
     public $name;
     public $country;
 }
 class Manufacturer{
+    public $id;
     public $name;
     public $description;
     public $adress;
@@ -35,19 +38,23 @@ class Manufacturer{
     public $city;
 }
 class Group{
+    public $id;
     public $name;
     public $description;
 }
 class SubGroup{
+    public $id;
     public $name;
     public $group;
     public $description;
 }
 class Gallery{
+    public $id;
     public $harcode;
     public $image;
 }
 class Item{
+    public $id;
     public $harcode;
     public $barcode;
     public $title;
@@ -61,19 +68,20 @@ class Item{
     public $subgroup;
 }
 class DisplayItem{
-   public $name;
-   public $shortdescription;
-   public $group;
-   public $subgroup;
-   public $images;
-   public $manufacturename;
-   public $manufactureadress;
-   public $manufacturetelephone;
-   public $manufactureurl;
-   public $manufactureemail;
-   public $description;
-   public $audio;
-   public $video;
-   public $pdf;
+    public $id;
+    public $name;
+    public $shortdescription;
+    public $group;
+    public $subgroup;
+    public $images;
+    public $manufacturename;
+    public $manufactureadress;
+    public $manufacturetelephone;
+    public $manufactureurl;
+    public $manufactureemail;
+    public $description;
+    public $audio;
+    public $video;
+    public $pdf;
 }
  ?>

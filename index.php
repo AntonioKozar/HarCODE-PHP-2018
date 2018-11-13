@@ -9,6 +9,8 @@
  * @author Antonio Kožar, mag.ing.el.
  */
 
+ session_start();
+ unset($_SESSION);
  ?>
 
 <!doctype html>
