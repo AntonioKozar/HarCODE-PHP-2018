@@ -6,7 +6,6 @@
 
     $HostPath = "..";
 
-
     
     if(isset($_POST['Update']) and $_POST['Update'] == "1")
     {
@@ -29,7 +28,7 @@
         $ID = $Products->id;
         $Result = ProductsUpdate($Products);
         print($Result);
-        //header("Location:" . $HostPath . "/products/index.php");
+        header("Location:" . $HostPath . "/products/index.php");
     }
     elseif (isset($_POST['ID']) and $_POST['ID'] != "") {
         $ID = $_POST['ID'];
@@ -38,7 +37,7 @@
         {
             $Result = '<script>alert("Country you are trying to edit is missing. Contact your administrator.");</script>';
             print($Result);
-            //header("Location:" . $HostPath . "/products/index.php");
+            header("Location:" . $HostPath . "/products/index.php");
         }
         $GroupView = GroupView();
         $SubgroupView = SubgroupView();
@@ -46,7 +45,7 @@
     else{
         $Result = '<script>alert("You need to select country to edit it.");</script>';
         print($Result);
-        //header("Location:" . $HostPath . "/products/index.php");
+        header("Location:" . $HostPath . "/products/index.php");
     }    
 ?>
  
@@ -175,7 +174,7 @@
         </nav> 
         <br><hr><br><br>
         <form method="POST" enctype="multipart/form-data">
-        <div class="form-group">
+          <div class="form-group">
                 <label for="InputProductsHarcode">Harcode</label>
                 <input value="<?php print($Result['harcode']);?>" type="input" class="form-control" id="InputProductsHarcode" placeholder="Product harcode here..." name="Harcode" required maxlength="7">
 

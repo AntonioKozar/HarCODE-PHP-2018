@@ -155,11 +155,11 @@
                 <td><?php print($Row[0]);?></td>
                 <td>
                     <p>                    
-                    <button class="btn btn-light btn-sm" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    <button class="btn btn-light btn-sm" type="button" data-toggle="collapse" data-target="#collapseDescription<?php print($counter);?>" aria-expanded="false" aria-controls="collapseDescription<?php print($counter);?>">
                         Show
                     </button>
                     </p>
-                    <div class="collapse" id="collapseExample">
+                    <div class="collapse" id="collapseDescription<?php print($counter);?>">
                     <div class="card card-body">
                     <?php print($Row[1]);?>
                     </div>

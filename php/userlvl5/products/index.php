@@ -137,16 +137,9 @@
                 <tr>
                 <th scope="col">#</th>
                 <th scope="col">harcode</th>
-                <th scope="col">barcode</th>
                 <th scope="col">title</th>
-                <th scope="col">subtitle</th>
-                <th scope="col">description</th>
                 <th scope="col">information</th>
-                <th scope="col">audio</th>
-                <th scope="col">video</th>
-                <th scope="col">pdf</th>
                 <th scope="col">group</th>
-                <th scope="col">subgroup</th>
                 <th scope="col">Options</th>
                 </tr>
             </thead>
@@ -158,27 +151,9 @@
                 <tr>
                 <th scope="row"><?php print($counter);?></th>
                 <td><?php print($Row[1]);?></td>
-                <td><?php print($Row[2]);?></td>
                 <td><?php print($Row[3]);?></td>
-                <td><?php print($Row[4]);?></td>
-                <td>
-                    <p>                    
-                    <button class="btn btn-light btn-sm" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                        Show
-                    </button>
-                    </p>
-                    <div class="collapse" id="collapseExample">
-                    <div class="card card-body">
-                    <?php print($Row[5]);?>
-                    </div>
-                    </div>              
-                </td>
                 <td><?php print($Row[6]);?></td>
-                <td><a target="_blank" class="btn btn-sm btn-link" href="<?php print($Row[7]);?>">LINK</a></td>
-                <td><a target="_blank" class="btn btn-sm btn-link" href="<?php print($Row[8]);?>">LINK</a></td>
-                <td><a target="_blank" class="btn btn-sm btn-link" href="<?php print($Row[9]);?>">LINK</a></td>
                 <td><?php print($Row[10]);?></td>
-                <td><?php print($Row[11]);?></td>
                 <td>
                     <div class="btn-group" role="group">
                         <form method="POST" action="read.php">

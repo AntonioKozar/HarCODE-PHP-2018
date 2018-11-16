@@ -410,44 +410,43 @@ function ProductsUpdate($Products){
     $Products->subtitle = mysqli_real_escape_string($DatabaseConnection, trim($Products->subtitle));
     $Products->description = mysqli_real_escape_string($DatabaseConnection, trim($Products->description));
     $Products->information = mysqli_real_escape_string($DatabaseConnection, trim($Products->information));
-    $Products->video = mysqli_real_escape_string($DatabaseConnection, trim($Products->video));
     $Products->group = mysqli_real_escape_string($DatabaseConnection, trim($Products->group));
     $Products->subgroup = mysqli_real_escape_string($DatabaseConnection, trim($Products->subgroup));
+
     $Products->audio = mysqli_real_escape_string($DatabaseConnection, trim($Products->audio));
+    $Products->video = mysqli_real_escape_string($DatabaseConnection, trim($Products->video));
     $Products->pdf = mysqli_real_escape_string($DatabaseConnection, trim($Products->pdf));
     //NEW AUDIO
     if($Products->audionew['size'] != 0){
         $DestinationAudio = "../../../res/audio/";
-        $Extension = strtolower(pathinfo($Products->audionew["name"],PATHINFO_EXTENSION));
+        $Extension = strtolower(pathinfo($Products->audionew['name'],PATHINFO_EXTENSION));
         $DestinationAudio .= $Products->harcode . "." . $Extension; 
         if (file_exists($Products->audio)) {
-        print($Products->audionew['size']);
             unlink($Products->audio);
         }
         $Products->audio = $DestinationAudio;
-        $Result = $DestinationAudio;
     }    
     //NEW VIDEO
-    if($Products->videonew !=""){
+    if($Products->videonew != ""){
         $Products->video = mysqli_real_escape_string($DatabaseConnection, trim("https://www.youtube.com/embed/" . $Products->videonew));
     }
     //NEW PDF
     if($Products->pdfnew['size'] != 0){
         $DestinationPDF = "../../../res/pdf/";
-        $Extension = strtolower(pathinfo($Products->pdfnew["name"],PATHINFO_EXTENSION));
+        $Extension = strtolower(pathinfo($Products->pdfnew['name'],PATHINFO_EXTENSION));
         $DestinationPDF .= $Products->harcode . "." . $Extension;
         if (file_exists($Products->pdf)) {
             unlink($Products->pdf);
         }
         $Products->pdf = $DestinationPDF;
     }    
-    // $Result = mysqli_query($DatabaseConnection, "UPDATE products SET harcode='{$Products->harcode}', barcode='{$Products->barcode}', title='{$Products->title}', subtitle='{$Products->subtitle}', description='{$Products->description}', information='{$Products->information}', audio='{$Products->audio}', video='{$Products->video}', pdf='{$Products->pdf}', groups='{$Products->group}', subgroups='{$Products->subgroup}', title='{$Products->group}' WHERE id='{$Products->id}';") or die('Error: ' . mysqli_error($DatabaseConnection));
-    // if(isset($Products->audionew) and $Products->audionew["size"] != 0){
-    //     move_uploaded_file($Products->audionew["tmp_name"],$DestinationAudio);
-    // }
-    // if(isset($Products->pdfnew) and $Products->pdfnew["size"] != 0){    
-    //     move_uploaded_file($Products->pdfnew["tmp_name"],$DestinationPDF);
-    // }
+    $Result = mysqli_query($DatabaseConnection, "UPDATE products SET harcode='{$Products->harcode}', barcode='{$Products->barcode}', title='{$Products->title}', subtitle='{$Products->subtitle}', description='{$Products->description}', information='{$Products->information}', audio='{$Products->audio}', video='{$Products->video}', pdf='{$Products->pdf}', groups='{$Products->group}', subgroups='{$Products->subgroup}', title='{$Products->group}' WHERE id='{$Products->id}';") or die('Error: ' . mysqli_error($DatabaseConnection));
+    if($Products->audionew['size'] != 0){
+        move_uploaded_file($Products->audionew['tmp_name'],$Products->audio);
+    }
+    if($Products->pdfnew['size'] != 0){    
+        move_uploaded_file($Products->pdfnew['tmp_name'],$Products->pdf);
+    }
     mysqli_close($DatabaseConnection);
     return $Result;
 }
@@ -458,10 +457,19 @@ function ProductsRead(){
     mysqli_close($DatabaseConnection);
     return $Result;
 }
-function ProductsDelete($ID){
+function ProductsDelete($Products){
     $DatabaseConnection = DatabaseConnection();
-    $ID = mysqli_real_escape_string($DatabaseConnection,trim($ID));
-    $Result = mysqli_query($DatabaseConnection, "DELETE FROM products WHERE id='{$ID}';") or die('Error: ' . mysqli_error($DatabaseConnection));
+    $Products->id = mysqli_real_escape_string($DatabaseConnection,trim($Products->id));
+    $Products->audio = mysqli_real_escape_string($DatabaseConnection, trim($Products->audio));
+    $Products->pdf = mysqli_real_escape_string($DatabaseConnection, trim($Products->pdf));
+
+    $Result = mysqli_query($DatabaseConnection, "DELETE FROM products WHERE id='{$Products->id}';") or die('Error: ' . mysqli_error($DatabaseConnection));
+    if (file_exists($Products->audio)) {
+        unlink($Products->audio);
+    }
+    if (file_exists($Products->pdf)) {
+        unlink($Products->pdf);
+    }
     mysqli_close($DatabaseConnection);
     return $Result;
 }
