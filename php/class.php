@@ -53,7 +53,7 @@ class Gallery{
     public $harcode;
     public $image;
 }
-class Item{
+class Products{
     public $id;
     public $harcode;
     public $barcode;
@@ -62,12 +62,15 @@ class Item{
     public $description;
     public $information;
     public $audio;
+    public $audionew;
     public $video;
+    public $videonew;
     public $pdf;
+    public $pdfnew;
     public $group;
     public $subgroup;
 }
-class DisplayItem{
+class DisplayProducts{
     public $id;
     public $name;
     public $shortdescription;

@@ -356,4 +356,126 @@ function SubgroupGet($ID){
 //#############################################################################################################################
 //                  PRODUCT FUNCTIONS
 //#############################################################################################################################
+function ProductsView(){
+    $DatabaseConnection = DatabaseConnection();
+    $Result = mysqli_query($DatabaseConnection, "SELECT * FROM products;") or die('Error: ' . mysqli_error($DatabaseConnection));
+    $Result = mysqli_fetch_all($Result, MYSQLI_NUM);
+    mysqli_close($DatabaseConnection);
+    return $Result;
+}
+function ProductsCreate($Products){
+    $DatabaseConnection = DatabaseConnection();
+    $Products->id = mysqli_real_escape_string($DatabaseConnection, trim($Products->id));
+    $Products->harcode = mysqli_real_escape_string($DatabaseConnection, trim($Products->harcode));
+    $Products->barcode = mysqli_real_escape_string($DatabaseConnection, trim($Products->barcode));
+    $Products->title = mysqli_real_escape_string($DatabaseConnection, trim($Products->title));
+    $Products->subtitle = mysqli_real_escape_string($DatabaseConnection, trim($Products->subtitle));
+    $Products->description = mysqli_real_escape_string($DatabaseConnection, trim($Products->description));
+    $Products->information = mysqli_real_escape_string($DatabaseConnection, trim($Products->information));
+    $Products->video = mysqli_real_escape_string($DatabaseConnection, trim("https://www.youtube.com/embed/" . $Products->video));
+    $Products->group = mysqli_real_escape_string($DatabaseConnection, trim($Products->group));
+    $Products->subgroup = mysqli_real_escape_string($DatabaseConnection, trim($Products->subgroup));
+    //$Products->audio = mysqli_real_escape_string($DatabaseConnection, trim($Products->audio));
+    $DestinationAudio = "../../../res/audio/";
+    $Extension = strtolower(pathinfo($Products->audio["name"],PATHINFO_EXTENSION));
+    $DestinationAudio .= $Products->harcode . "." . $Extension; 
+    //$Products->pdf = mysqli_real_escape_string($DatabaseConnection, trim($Products->pdf));
+    $DestinationPDF = "../../../res/pdf/";
+    $Extension = strtolower(pathinfo($Products->pdf["name"],PATHINFO_EXTENSION));
+    $DestinationPDF .= $Products->harcode . "." . $Extension;
+    
+    $MysqliResult = mysqli_query($DatabaseConnection, "
+    SELECT id FROM products WHERE harcode='{$Products->harcode}' AND barcode='{$Products->barcode}';") or die('Error on SELECT: ' . mysqli_error($DatabaseConnection));
+    if(mysqli_num_rows($MysqliResult) == 0){
+        mysqli_query($DatabaseConnection, "INSERT INTO products (harcode, barcode, title, subtitle, description, information, audio, video, pdf, groups, subgroups) VALUES ('{$Products->harcode}', '{$Products->barcode}', '{$Products->title}', '{$Products->subtitle}', '{$Products->description}', '{$Products->information}', '{$DestinationAudio}', '{$Products->video}', '{$DestinationPDF}', '{$Products->group}', '{$Products->subgroup}');") or die('Error on INSERT: ' . mysqli_error($DatabaseConnection));
+        
+        move_uploaded_file($Products->audio["tmp_name"],$DestinationAudio);
+        move_uploaded_file($Products->pdf["tmp_name"],$DestinationPDF);
+        $Result = '<script>alert("Product you have enterd: ' . $Products->harcode . ' has been successfully added to the database.");</script>';
+    }
+    else{
+        $Result = '<script>alert("Product you have enterd: ' . $Products->harcode . ' already exists.");</script>';
+    }    
+
+    
+    mysqli_close($DatabaseConnection);
+    return $Result;
+}
+function ProductsUpdate($Products){
+    $DatabaseConnection = DatabaseConnection();
+    $Products->id = mysqli_real_escape_string($DatabaseConnection, trim($Products->id));
+    $Products->harcode = mysqli_real_escape_string($DatabaseConnection, trim($Products->harcode));
+    $Products->barcode = mysqli_real_escape_string($DatabaseConnection, trim($Products->barcode));
+    $Products->title = mysqli_real_escape_string($DatabaseConnection, trim($Products->title));
+    $Products->subtitle = mysqli_real_escape_string($DatabaseConnection, trim($Products->subtitle));
+    $Products->description = mysqli_real_escape_string($DatabaseConnection, trim($Products->description));
+    $Products->information = mysqli_real_escape_string($DatabaseConnection, trim($Products->information));
+    $Products->video = mysqli_real_escape_string($DatabaseConnection, trim($Products->video));
+    $Products->group = mysqli_real_escape_string($DatabaseConnection, trim($Products->group));
+    $Products->subgroup = mysqli_real_escape_string($DatabaseConnection, trim($Products->subgroup));
+    $Products->audio = mysqli_real_escape_string($DatabaseConnection, trim($Products->audio));
+    $Products->pdf = mysqli_real_escape_string($DatabaseConnection, trim($Products->pdf));
+    //NEW AUDIO
+    if($Products->audionew['size'] != 0){
+        $DestinationAudio = "../../../res/audio/";
+        $Extension = strtolower(pathinfo($Products->audionew["name"],PATHINFO_EXTENSION));
+        $DestinationAudio .= $Products->harcode . "." . $Extension; 
+        if (file_exists($Products->audio)) {
+        print($Products->audionew['size']);
+            unlink($Products->audio);
+        }
+        $Products->audio = $DestinationAudio;
+        $Result = $DestinationAudio;
+    }    
+    //NEW VIDEO
+    if($Products->videonew !=""){
+        $Products->video = mysqli_real_escape_string($DatabaseConnection, trim("https://www.youtube.com/embed/" . $Products->videonew));
+    }
+    //NEW PDF
+    if($Products->pdfnew['size'] != 0){
+        $DestinationPDF = "../../../res/pdf/";
+        $Extension = strtolower(pathinfo($Products->pdfnew["name"],PATHINFO_EXTENSION));
+        $DestinationPDF .= $Products->harcode . "." . $Extension;
+        if (file_exists($Products->pdf)) {
+            unlink($Products->pdf);
+        }
+        $Products->pdf = $DestinationPDF;
+    }    
+    // $Result = mysqli_query($DatabaseConnection, "UPDATE products SET harcode='{$Products->harcode}', barcode='{$Products->barcode}', title='{$Products->title}', subtitle='{$Products->subtitle}', description='{$Products->description}', information='{$Products->information}', audio='{$Products->audio}', video='{$Products->video}', pdf='{$Products->pdf}', groups='{$Products->group}', subgroups='{$Products->subgroup}', title='{$Products->group}' WHERE id='{$Products->id}';") or die('Error: ' . mysqli_error($DatabaseConnection));
+    // if(isset($Products->audionew) and $Products->audionew["size"] != 0){
+    //     move_uploaded_file($Products->audionew["tmp_name"],$DestinationAudio);
+    // }
+    // if(isset($Products->pdfnew) and $Products->pdfnew["size"] != 0){    
+    //     move_uploaded_file($Products->pdfnew["tmp_name"],$DestinationPDF);
+    // }
+    mysqli_close($DatabaseConnection);
+    return $Result;
+}
+function ProductsRead(){
+    $DatabaseConnection = DatabaseConnection();
+    $Result = mysqli_query($DatabaseConnection, "SELECT harcode, barcode, title, subtitle, description, information, audio, video, pdf, groups, subgroups FROM products;") or die('Error: ' . mysqli_error($DatabaseConnection));
+    $Result = mysqli_fetch_all($Result, MYSQLI_NUM);
+    mysqli_close($DatabaseConnection);
+    return $Result;
+}
+function ProductsDelete($ID){
+    $DatabaseConnection = DatabaseConnection();
+    $ID = mysqli_real_escape_string($DatabaseConnection,trim($ID));
+    $Result = mysqli_query($DatabaseConnection, "DELETE FROM products WHERE id='{$ID}';") or die('Error: ' . mysqli_error($DatabaseConnection));
+    mysqli_close($DatabaseConnection);
+    return $Result;
+}
+function ProductsGet($ID){
+    $DatabaseConnection = DatabaseConnection();
+    $ID = mysqli_real_escape_string($DatabaseConnection,trim($ID));
+    $Result = mysqli_query($DatabaseConnection, "SELECT harcode, barcode, title, subtitle, description, information, audio, video, pdf, groups, subgroups FROM products WHERE id='{$ID}';") or die('Error: ' . mysqli_error($DatabaseConnection));
+    if(mysqli_num_rows($Result) == 1){
+        $Result = mysqli_fetch_assoc($Result);
+    }
+    else{
+        $Result = 0;
+    }
+    mysqli_close($DatabaseConnection);
+    return $Result;
+}
 ?>

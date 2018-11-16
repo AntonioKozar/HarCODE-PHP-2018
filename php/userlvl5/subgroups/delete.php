@@ -11,24 +11,24 @@
     if(isset($_POST['delete']) and $_POST['delete'] == "1")
     {
         $ID = $_POST['ID'];    
-        $Result = CityDelete($ID);
-        header("Location:" . $HostPath . "/citys/index.php");
+        $Result = SubgroupDelete($ID);
+        header("Location:" . $HostPath . "/subgroups/index.php");
     }
     elseif (isset($_POST['ID']) and $_POST['ID'] != "") {
         $ID = $_POST['ID'];
-        $Result = CityGet($ID);
+        $Result = SubgroupGet($ID);
         if($Result == 0)
         {
             $Result = '<script>alert("Country you are trying to edit is missing. Contact your administrator.");</script>';
             print($Result);
-            header("Location:" . $HostPath . "/citys/index.php");
+            header("Location:" . $HostPath . "/subgroups/index.php");
         }
-        $CountryResult = CountryView();
+        $CountryResult = GroupView();
     }
     else{
         $Result = '<script>alert("You need to select country to edit it.");</script>';
         print($Result);
-        header("Location:" . $HostPath . "/citys/index.php");
+        header("Location:" . $HostPath . "/subgroups/index.php");
     }    
 ?>
  
@@ -86,7 +86,7 @@
                   <a class="dropdown-item" href="<?php print($HostPath) ?>/groups/delete.php">Delete</a>
                 </div>
               </li>
-              <li class="nav-item dropdown">
+              <li class="nav-item dropdown active">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownSubgroups" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Subgroups
                 </a>
@@ -96,7 +96,7 @@
                   <a class="dropdown-item" href="<?php print($HostPath) ?>/subgroups/create.php">Create</a>
                   <a class="dropdown-item" href="<?php print($HostPath) ?>/subgroups/read.php">Read</a>                  
                   <a class="dropdown-item" href="<?php print($HostPath) ?>/subgroups/update.php">Update</a>
-                  <a class="dropdown-item" href="<?php print($HostPath) ?>/subgroups/delete.php">Delete</a>
+                  <a class="dropdown-item active" href="<?php print($HostPath) ?>/subgroups/delete.php">Delete</a>
                 </div>
               </li>
               <li class="nav-item dropdown">
@@ -112,7 +112,7 @@
                   <a class="dropdown-item" href="<?php print($HostPath) ?>/manufacturers/delete.php">Delete</a>
                 </div>
               </li>
-              <li class="nav-item active dropdown">
+              <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCitys" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Citys
                 </a>
@@ -121,7 +121,7 @@
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item" href="<?php print($HostPath) ?>/citys/create.php">Create</a>
                   <a class="dropdown-item" href="<?php print($HostPath) ?>/citys/read.php">Read</a>                  
-                  <a class="dropdown-item active" href="<?php print($HostPath) ?>/citys/update.php">Update</a>
+                  <a class="dropdown-item" href="<?php print($HostPath) ?>/citys/update.php">Update</a>
                   <a class="dropdown-item" href="<?php print($HostPath) ?>/citys/delete.php">Delete</a>
                 </div>
               </li>
